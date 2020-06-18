@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.palladiosimulator.docker.compose.generator
+Bundle-SymbolicName: org.palladiosimulator.somox.docker.compose.generator
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: palladiosimulator.org
+Automatic-Module-Name: org.palladiosimulator.docker.compose.generator
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.palladiosimulator.somox.docker.compose,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.apache.log4j,
+ com.google.inject,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.xtext

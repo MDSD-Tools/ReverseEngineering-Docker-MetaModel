@@ -1,0 +1,8 @@
+version: '3'
+services:
+  web:
+    build: testtest
+    ports:
+      - "5555:5555"
+  redis:
+    image: "redis:alpine"

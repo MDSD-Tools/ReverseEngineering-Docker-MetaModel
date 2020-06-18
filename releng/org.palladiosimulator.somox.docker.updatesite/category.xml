@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="org.palladiosimulator.somox.docker.feature">
+      <category name="org.palladiosimulator.somox.docker" />
+   </feature>
+   <category-def name="org.palladiosimulator.somox.docker"
+      label="Metamodels of Docker configuration files, Dockerfile and Compose, for software model extraction." />
+</site>

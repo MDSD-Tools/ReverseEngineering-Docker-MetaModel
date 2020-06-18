@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.palladiosimulator.somox.docker
+Bundle-ManifestVersion: 2
+Bundle-Name: org.palladiosimulator.somox.docker
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.palladiosimulator.somox.docker; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.eclipse.xtext.util,
+ org.eclipse.emf.common,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Export-Package: org.palladiosimulator.somox.docker.generator,
+ org.palladiosimulator.somox.docker,
+ org.palladiosimulator.somox.docker.parser.antlr.internal,
+ org.palladiosimulator.somox.docker.parser.antlr,
+ org.palladiosimulator.somox.docker.dockerFile.util,
+ org.palladiosimulator.somox.docker.scoping,
+ org.palladiosimulator.somox.docker.services,
+ org.palladiosimulator.somox.docker.dockerFile,
+ org.palladiosimulator.somox.docker.validation,
+ org.palladiosimulator.somox.docker.serializer,
+ org.palladiosimulator.somox.docker.dockerFile.impl
+Import-Package: org.apache.log4j

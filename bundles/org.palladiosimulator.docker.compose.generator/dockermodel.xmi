@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:composeFile="http://www.palladiosimulator.org/docker/compose/ComposeFile">
+  <composeFile:DockerCompose version="3">
+    <services name="web">
+      <build build="testbuild"/>
+      <ports>
+        <ports>
+          <list>&quot;5000:5000&quot;</list>
+        </ports>
+      </ports>
+    </services>
+    <services name="redis" image="&quot;redis:alpine&quot;"/>
+  </composeFile:DockerCompose>
+  <composeFile:DockerCompose version="3">
+    <services name="web">
+      <build build="testtest"/>
+      <ports>
+        <ports>
+          <list>&quot;5555:5555&quot;</list>
+        </ports>
+      </ports>
+    </services>
+    <services name="redis" image="&quot;redis:alpine&quot;"/>
+  </composeFile:DockerCompose>
+</xmi:XMI>

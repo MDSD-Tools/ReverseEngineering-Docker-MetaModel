@@ -1,0 +1,310 @@
+grammar org.palladiosimulator.somox.docker.compose.ComposeFile with org.eclipse.xtext.common.Terminals
+
+generate composeFile "http://www.palladiosimulator.org/somox/docker/compose/ComposeFile"
+	
+DockerCompose:
+    {DockerCompose}
+    "version" ":" version=STRING
+    ("services" ":" BEGIN (services+=Service)* END)?
+    ("volumes" ":" BEGIN (volumes+=Volumes)* END)?
+    ("networks" ":" BEGIN (networks+=Networks)* END)?
+    ("configs" ":" BEGIN (configs+=Configs)* END)?
+    ("secrets" ":" BEGIN (secrets+=Secrets)* END)?;
+
+Service:
+    {Service}
+    name=ID ":" BEGIN (
+        ("build" ":" build=Build) |
+        ("cap_add" ":" cap_add=List) |
+        ("cap_drop" ":" cap_drop=List) |
+        ("cgroup_parent" ":" cgroup_parent=Value) |
+        ("command" ":" command=Value) |
+        ("configs" ":" command=Value) | // TODO short long
+        ("container_name" ":" container_name=Value) |
+        ("credential_spec" ":"  credential_spec=CredentialSpec) |
+        ("depends_on" ":"  depends_on=List) |
+        ("deploy" ":"  deploy=Deploy) |
+        ("devices" ":"  devices=List) |
+        ("dns" ":"  dns=List) |
+        ("dns_search" ":"  dns=List) |
+        ("domainname" ":" domainname=Value) |
+        ("entrypoint" ":"  entrypoint=ValueOrList) |
+        ("env_file" ":"  env_file=ValueOrList) |
+        ("environment" ":"  environment=Mapping) |
+        ("expose" ":" expose=List) |
+        ("external_links" ":" external_links=List) |
+        ("extra_hosts" ":" external_links=ListOrMapping) |
+        ("healthcheck" ":" healthcheck=Healthcheck) |
+        ("hostname" ":" hostname=Value) |
+        ("image: " image=Value) |
+        ("init" ":" init=Value) |
+        ("ipc" ":" ipc=Value) |
+        ("isolation" ":" isolation=Value) |
+        ("labels" ":" labels=ListOrMapping) | // TODO ValueOrMap
+        ("links" ":" links=ListOrMapping) |
+        ("logging" ":" logging=Logging) |
+        ("mac_address" ":" mac_address=Value) |
+        ("network_mode" ":" network_mode=Value) |
+        ("networks" ":" networks=List) |
+        ("pid" ":" pid=Value) |
+        ("ports" ":" ports=Ports) |
+        ("privileged" ":" privileged=Value) |
+        ("read_only" ":" read_only=Value) |
+        ("restart" ":" restart=Value) |
+        ("secrets" ":" secrets=ServiceSecrets) |
+        ("security_opt" ":" security_opt=List) |
+        ("shm_size" ":" shm_size=Value) |
+        ("stdin_open" ":" stdin_open=Value) |
+        ("stop_grace_period" ":" stop_grace_period=Value) |
+        ("stop_signal" ":" stop_signal=Value) |
+        ("sysctls" ":" sysctls=ListOrMapping) |
+        ("tmpfs" ":" sysctls=ValueOrList) |
+        ("tty" ":" tty=Value) |
+        ("ulimits" ":" ulimits=Ulimits) |
+        ("user" ":" user=Value) |
+        ("userns_mode" ":" userns_mode=Value) |
+        ("volumes" ":" volumes=ServiceVolumes) |
+        ("working_dir" ":" working_dir=Value)
+    )+ END;
+
+
+Build:
+    {Build}
+    build=Value | BuildLongSyntax;
+
+BuildLongSyntax:
+    BEGIN (
+        ("context" ":" context=Value) |
+        ("dockerfile" ":" dockerfile=Value) |
+        ("args" ":" args=ListOrMapping) |
+        ("labels" ":" labels=ListOrMapping) |
+        ("cache_from" ":" cache_from=ListOrMapping) |
+        ("network" ":" network=Value) |
+        ("target" ":" target=Value) |
+        ("shm_size" ":" shm_size=Value)
+    )+ END;
+
+DeployConfigs:
+    {Configs}
+    list=ListOrMapping | DeployConfigsLongSyntax | Config;
+
+DeployConfigsLongSyntax:
+    BEGIN
+        ("- " "source" ":" source=Value)
+        ("target" ":" target=Value)
+        ("uid" ":" uid=Value)
+        ("gid" ":" gid=Value)
+        ("mode" ":" mode=Value)
+    END;
+
+CredentialSpec:
+    {CredentialSpec}
+    ("file" ":" file=Value) | ("registry" ":" registry=Value);
+
+Deploy:
+    {Deploy}
+    BEGIN (
+        ("endpoint_mode" ":" endpoint_mode=Value) |
+        ("labels" ":" labels=Mapping) |
+        ("mode" ":" mode=Value) |
+        ("placement" ":" placement=Placement) |
+        ("replicas" ":" replicas=Value) |
+        ("resources" ":" resources=Value) |
+        ("restart_policy" ":" restart_policy=RestartPolicy) |// TODO limits reservations
+        ("rollback_config" ":" rollback_config=DeployConfigs) |
+        ("update_config" ":" update_config=DeployConfigs)
+    )+ END;
+
+Placement:
+    {Placement}
+    BEGIN (
+        ("constraints" ":" constraints=ValueOrList) |
+        ("preferences" ":" preferences=ListOrMapping)
+    )+ END;
+
+RestartPolicy:
+    {RestartPolicy}
+    BEGIN (
+        ("condition" ":" condition=Value) |
+        ("delay" ":" delay=Value) |
+        ("max_attempts" ":" max_attempts=Value) |
+        ("window" ":" window=Value)
+    )+ END;
+
+Config:
+    {Config}
+    BEGIN (
+        ("parallelism" ":" parallelism=Value) |
+        ("delay" ":" delay=Value) |
+        ("failure_action" ":" failure_action=Value) |
+        ("monitor"":" monitor=Value) |
+        ("max_failure_ratio" ":" max_failure_ratio=Value) |
+        ("order" ":" order=Value)
+    )+ END;
+
+Healthcheck:
+    {Healthcheck}
+    BEGIN (
+        ("disable" ":" disable=Value) |
+        ("interval" ":" interval=Value) |
+        ("retries" ":" retries=Value) |
+        ("test" ":" test=ValueOrList) |
+        ("timeout" ":" timeout=Value) |
+        ("start_period" ":" start_period=Value)
+    )+ END;
+
+Logging:
+    {Logging}
+    BEGIN (
+        ("driver" ":" driver=Value)
+        ("options" ":" options=Mapping)
+    )+ END;
+
+Ports:
+    {Ports}
+    ports=List | PortLongSyntax;
+
+PortLongSyntax:
+    BEGIN
+        ("- " "target" ":" target=Value)
+        ("published" ":" published=Value)
+        ("protocol" ":" protocol=Value)
+        ("mode" ":" mode=Value)
+    END;
+
+ServiceSecrets:
+    {ServiceSecrets}
+    secret=Value | ServiceSecretsLongSyntax;
+
+ServiceSecretsLongSyntax:
+    BEGIN
+        ("- " "source" ":" source=Value)
+        ("target" ":" target=Value)
+        ("uid" ":" uid=Value)
+        ("gid" ":" gid=Value)
+        ("mode" ":" mode=Value)
+    END;
+
+Ulimits:
+    (name=ID ":" value=Value) | (name=ID ":" BEGIN "soft" ":" soft=Value "hard" ":" hard=Value END);
+
+ServiceVolumes:
+    BEGIN
+        "- " (volumes=Value | ServiceVolumeLongSyntax)
+    END;
+
+ServiceVolumeLongSyntax:
+    "type" ":" type=Value
+    ("source" ":" source=Value)
+    ("target" ":" target=Value)
+    ("read_only" ":" read_only=Value)
+    ("consistency" ":" consistency=Value)
+    ("bind" ":" (BEGIN "propagation" ":" bindPropagation=Value END))
+    ("volume" ":" (BEGIN "nocopy" ":" volumeNocopy=Value END))
+    ("tmpfs" ":" (BEGIN "size" ":" tmpfsSize=Value END));
+
+Volumes:
+    {Volumes}
+    name=ID ":" BEGIN (
+        ("driver" ":" driver=Value) |
+        ("driver_opts" ":" driver_opts=Mapping) |
+        ("external" ":" external=Value) |
+        ("labels" ":" labels=ListOrMapping) |
+        ("name" ":" customName=Value)
+    )* END;
+
+Networks:
+    {Networks}
+    name=ID ":" BEGIN (
+        ("driver" ":" driver=Value) |
+        ("driver_opts" ":" driver_opts=Mapping) |
+        ("attachable" ":" attachable=Value) |
+        ("enable_ipv6" ":" enable_ipv6=Value) |
+        ("ipam" ":" ipam=Ipam) |
+        ("internal" ":" internal=Value) |
+        ("labels" ":" labels=ListOrMapping) |
+        ("external" ":" external=Value) |
+        ("name" ":" customName=Value)
+    )* END;
+
+Ipam:
+    {Ipam}
+    BEGIN
+        ("driver" ":" driver=Value)
+        ("config" ":" config=ListOrMapping)
+    END;
+
+Configs:
+    {Configs}
+    name=ID ":" BEGIN (
+        ("file" ":" file=Value) |
+        ("external" ":" external=Value) |
+        ("name" ":" customName=Value)
+    )+ END;
+
+Secrets:
+    {Secrets}
+    name=ID ":" BEGIN (
+        ("file" ":" file=Value) |
+        ("external" ":" external=Value) |
+        ("name" ":" customName=Value)
+    )+ END;
+
+ValueOrList:
+    {List}
+    list+=Value | List;
+
+ListOrMapping:
+    List | Mapping;
+
+List:
+    BEGIN
+        ("- " list+=Value)+
+    END;
+
+Mapping:
+    BEGIN (
+        (map+=MappingWithPrefixAndColon)+ |
+        (map+=MappingWithoutPrefixAndColon)+ |
+        (map+=MappingWithPrefixAndEqual)+ |
+        (map+=MappingWithoutPrefixAndEqual)+
+    ) END;
+
+MappingWithPrefixAndColon:
+    ("- " name=Value ':' (value=Value)?);
+
+MappingWithoutPrefixAndColon:
+    (name=Value ':' (value=Value)?);
+
+MappingWithPrefixAndEqual:
+    ("- " name=Value '=' (value=Value)?);
+
+MappingWithoutPrefixAndEqual:
+    (name=Value '=' (value=Value)?);
+
+Value: // returns ecore::EString
+    STRING | ID;
+
+//Boolean returns ecore::EBoolean:
+//    "true" | "false" | "yes" | "no" | "on" | "off";
+
+//Byte returns ecore::EInt:
+//    STRING | (INT ('b'|'k'|'m'|'g'|'kb'|'mb'|'gb')) ;
+
+//Path returns ecore::EString:
+//    STRING | ('/')? (ID|'.'|'..'|'~') ('/' (ID|'.'|'..'))* ('/')?;
+
+//Dockerfile returns ecore::EString:
+//    STRING | (ID|'.'|'-')+;
+
+//Command:
+//    (ID (' '+ (ID|INT))*) | ('['STRING (',' STRING)*']');
+
+//terminal BARE_STRING: ('a'..'z'|'A'..'Z'|'0'..'9'|'!'|'#'|'$'|'%'|'&'|'('|')'|'*'|'+'|'-'|','|'.'|'/'|';'|'<'|'>'|'?'|'@'|'['|']'|'_'|'{'|'}'|'~')+;
+
+//Variable:
+//    '${'variable=ID'}';
+
+terminal BEGIN: 'synthetic:BEGIN';
+terminal END: 'synthetic:END';
+	
