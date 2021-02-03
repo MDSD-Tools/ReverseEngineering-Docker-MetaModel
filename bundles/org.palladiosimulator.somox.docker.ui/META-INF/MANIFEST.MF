@@ -3,7 +3,7 @@ Automatic-Module-Name: org.palladiosimulator.somox.docker.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: org.palladiosimulator.somox.docker.ui
 Bundle-Vendor: My Company
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-SymbolicName: org.palladiosimulator.somox.docker.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.palladiosimulator.somox.docker,
