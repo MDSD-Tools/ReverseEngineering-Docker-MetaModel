@@ -1,2 +1,2 @@
-# Palladio-ReverseEngineering-Docker
-Metamodels of Docker configuration files, Dockerfile and Compose, for reverse engineering: https://sdqweb.ipd.kit.edu/wiki/SoMoX
+# ReverseEngineering-Docker-MetaModel
+Metamodels of Docker configuration files, [Dockerfile](https://docs.docker.com/engine/reference/builder/) and [Compose](https://docs.docker.com/compose/compose-file/).
